@@ -180,7 +180,7 @@ def breach_protocol(sequences):
 # main function	
 def main():
 
-	print("Engaging Beach Protocol...")
+	print("Engaging Breach Protocol...")
 	
 	# Find breach solutions
 	solutions = breach_protocol(SEQUENCES)
@@ -189,7 +189,7 @@ def main():
 		print("No solutions found!")
 
 	else:
-		print("Identified Solutions (as row, column coordinates):")
+		print("Identified Solutions:")
 		for paths in solutions:
 			print("\t", paths, sep = "")
 
