@@ -15,6 +15,7 @@ RULES:
 				or making the puzzle possible at all.
 
 NOTES
+	- Need to deal with branching solutions
 	- Does not consider doubles (when one selection counts for two codes)
 	- Does not account for error capacity
 	- Add cyberpunk asthetic to print statements, lol
@@ -33,7 +34,7 @@ SEQUENCES = [["BD", "1C"],
 			 ["1C", "1C", "E9"],
 			 ["1C", "1C", "BD"]]
 
-#	Not solvable for all
+#	Not solvable for all sequences
 FRAME = [["BD", "E9", "1C", "BD", "BD"],
 		 ["55", "55", "55", "1C", "E9"],
 		 ["1C", "BD", "BD", "55", "1C"],
@@ -70,10 +71,10 @@ def index_finder(sequence, hexcode, row, index, prev_index, depth, exclude_list)
 	if row:
 		line = FRAME[index]
 	else:
-		line = [line[index] for line in FRAME]
+		line = [row_col[index] for row_col in FRAME]
 
 
-	print("\tSearching for", hexcode, "in", line)
+	# print("\tSearching for ", hexcode, " in ", line, "...", sep = "")
 
 	# find indicies of matching hex codes
 	for i in range(len(line)):
@@ -89,41 +90,42 @@ def index_finder(sequence, hexcode, row, index, prev_index, depth, exclude_list)
 			# if hexcode match
 			if line[i] == hexcode:
 
-				print("\t    Found in position", i)
+				# print("\t    Found in position", i)
 
 				exclude_list.append(coord)
 
 				# if buffer size is reached 
 				if depth == len(sequence) - 1:
-					print("\tSolution found!")
+					# print("\tSolution found!")
 					return str(i) + "+"
 
 				# get new hexcode 
 				new_depth = depth + 1
+				new_row = not row
 
 				#	if buffer size is met
 				if depth >= BUFFER_SIZE - 1:
-					print("\tBUFFER REACHED!!!")
+					# print("\tBUFFER REACHED!!!")
 					return "!"
 				
 				# new hexcode to find
 				new_hexcode = sequence[new_depth]
 
-				print("\t    New hexcode target is", new_hexcode)
-				print("\t    Searching at depth", new_depth)
-				print("\t    Excluding", exclude_list)
+				# print("\t    New hexcode target is", new_hexcode)
+				# print("\t    Searching at depth", new_depth)
+				# print("\t    Excluding", exclude_list)
 
-				# recurse and try to find next hexcode
-				return (str(i) + index_finder(sequence = sequence,
-											  hexcode = new_hexcode,
-											  row = not row,
-											  index = i,
-											  prev_index = i,
-											  depth = new_depth,
-											  exclude_list = exclude_list))
+				tmp_str = (str(i) + index_finder(sequence = sequence,
+												 hexcode = new_hexcode,
+												 row = new_row,
+												 index = i,
+												 prev_index = i,
+												 depth = new_depth,
+												 exclude_list = exclude_list))
 
-	
-	print("\t    Hexcode not found!")
+				if tmp_str[-1] != "-":
+					return tmp_str
+
 	return "-"
 
 
@@ -147,7 +149,7 @@ def breach_protocol(sequences):
 		list_seq = [seq[i:i + 2] for i in range(0, len(seq), 2)]
 		hexcode = list_seq[0]
 
-		print("    Processing Sequences ", list_seq, "...", sep = "")
+		print("    Processing Sequences", list_seq)
 		result = index_finder(sequence = list_seq,
 							  hexcode = hexcode, 
 							  row = True,
@@ -180,14 +182,14 @@ def main():
 
 	print("Engaging Beach Protocol...")
 	
-	# find 
+	# Find breach solutions
 	solutions = breach_protocol(SEQUENCES)
 
 	if len(solutions) == 0:
-		print("\nNo solutions found!")
+		print("No solutions found!")
 
 	else:
-		print("\nIdentified Solutions (as row, column coordinates):")
+		print("Identified Solutions (as row, column coordinates):")
 		for paths in solutions:
 			print("\t", paths, sep = "")
 
