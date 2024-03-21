@@ -16,6 +16,8 @@ RULES:
 
 NOTES
 	- Need to deal with branching solutions
+		Probably convert string path to list and have nested lists representing
+		branching solutions
 	- Does not consider doubles (when one selection counts for two codes)
 	- Does not account for error capacity
 	- Add cyberpunk asthetic to print statements, lol
@@ -28,11 +30,29 @@ import itertools
 
 ##########################################################################################
 # Global Variables
+
+# Found from: https://emojicombos.com/cyberpunk-2077-ascii-art 
+UNNECESSARY_INTRO = """//////////////////////////////////////////////////////////////////////////////
+
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡀⠀⠀⠀⠀⠀⠀⠀⡔⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡠⢚⣉⣠⡽⠂⠀⠀⠀⠀⡰⢋⡼⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⢴⡆⠀⠀
+⠀⠀⠀⠀⠀⢀⡤⠐⢊⣥⠶⠛⠁⢀⠄⡆⣠⠤⣤⠞⢠⠿⢥⡤⠀⠀⠠⢤⠀⠀⠀⠤⠤⠤⡄⢠⠤⠄⠤⠀⠀⠀⠒⣆⡜⣿⣄⠀⡤⢤⠖⣠⣀⠤⢒⣭⠶⠛⠃⠀⠀
+⢀⣀⡠⢴⣎⣥⣴⣾⣟⡓⠒⠒⠒⠺⣄⡋⢀⡾⢃⣴⢖⣢⣞⢁⣋⣉⣹⠏⠚⠛⢛⣉⣤⡴⢞⠃⣰⠾⠟⣛⣩⢵⢶⡟⣰⠇⠘⡼⢡⡟⣀⡋⢵⡞⠋⠁⠀⠀⠀⠀⠀
+⠈⠢⠄⠤⠤⠤⠤⠤⠴⠤⠴⠶⠶⢾⠟⣱⡿⢤⢿⣕⠾⣿⣿⣩⡭⢤⠞⣰⠶⢤⣀⡉⠓⢾⡍⣠⠴⠾⠛⠹⠡⣟⡁⢰⢏⣼⡇⢰⣿⢀⠟⠳⣤⣌⣦⡀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡠⢃⡼⠋⠛⠾⠚⠁⠀⠈⠉⠀⠀⠸⣄⠏⠀⠀⠈⠙⠓⡟⣰⠏⠀⠀⠀⠘⠾⠛⠳⠞⠉⠁⠙⠋⠙⠚⠀⠀⠀⠙⠛⢿⣷⣤⣀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣜⡵⠟⠀⠀⠀⠀⠀⠀⣼⣿⣾⣿⣽⣽⣿⣿⢏⢫⣻⡹⡽⣰⢏⣯⠍⡭⡍⣭⢩⡭⢩⡍⡏⡏⣯⡍⣍⠙⡭⢹⣄⣤⠄⢠⠉⠓⢿⣕⡄
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⣯⠃⠀⠀⠀⠀⠀⠀⠀⣸⣿⣿⣿⣿⣿⣽⣾⣾⣟⣯⣣⣱⣾⣟⣞⣸⣇⣳⣃⣿⣛⣷⣬⠧⠳⠇⠿⢧⢿⢀⣷⢸⠧⢾⢃⠇⠀⠀⠀⠀⠁
+
+
+//////////////////////////////////////////////////////////////////////////////"""
+
+
 BUFFER_SIZE = 8
 
 SEQUENCES = [["BD", "1C"],
 			 ["1C", "1C", "E9"],
 			 ["1C", "1C", "BD"]]
+
 
 #	Not solvable for all sequences
 FRAME = [["BD", "E9", "1C", "BD", "BD"],
@@ -56,6 +76,24 @@ ERROR_CAP = BUFFER_SIZE - sum(map(len, SEQUENCES))
 
 ##########################################################################################
 # Functions
+
+# This set of functions is completely unnecessary, but cool for the cyberpunk vibe
+#	Modified from this forum response: https://stackoverflow.com/questions/39473297/how-do-i-print-colored-output-with-python-3
+def print_fail(message, end = '\n'):
+	sys.stderr.write('\x1b[1;31m' + message + '\x1b[0m' + end)
+
+def print_pass(message, end = '\n'):
+	sys.stdout.write('\x1b[1;32m' + message + '\x1b[0m' + end)
+
+def print_res(message, end = '\n'):
+	sys.stderr.write('\x1b[1;33m' + message + '\x1b[0m' + end)
+
+def print_info(message, end = '\n'):
+	sys.stdout.write('\x1b[1;34m' + message + '\x1b[0m' + end)
+
+
+#############################################
+# Function for finding index of hexcode in row or column of matrix
 def index_finder(sequence, hexcode, row, index, prev_index, depth, exclude_list):
 
 	# Takes possible hex codes to find,
@@ -72,7 +110,6 @@ def index_finder(sequence, hexcode, row, index, prev_index, depth, exclude_list)
 		line = FRAME[index]
 	else:
 		line = [row_col[index] for row_col in FRAME]
-
 
 	# print("\tSearching for ", hexcode, " in ", line, "...", sep = "")
 
@@ -130,6 +167,7 @@ def index_finder(sequence, hexcode, row, index, prev_index, depth, exclude_list)
 
 
 #############################################
+# Wrapper function for index_finder
 def breach_protocol(sequences):
 
 	# Takes sequences, generates all possible combinatinos
@@ -149,7 +187,7 @@ def breach_protocol(sequences):
 		list_seq = [seq[i:i + 2] for i in range(0, len(seq), 2)]
 		hexcode = list_seq[0]
 
-		print("    Processing Sequences", list_seq)
+		print("  //CRACKING SEQUENCE: " + str(list_seq) + "")
 		result = index_finder(sequence = list_seq,
 							  hexcode = hexcode, 
 							  row = True,
@@ -160,17 +198,23 @@ def breach_protocol(sequences):
 
 		# if solution found, format path as coordinates
 		if result[-1] == "+":
+
+			print_pass("  //BREACHING_STATUS.................................................COMPLETE")
 			
-			path = "0" + result[0] + ","
+			path = "['0" + result[0] + "', "
 			for i in range(1, len(result) - 1):
 
 				if i % 2:
-					path += result[i] + result[i - 1] + ","
+					path += "'" + result[i] + result[i - 1] + "', "
 				else:
-					path +=  result[i - 1] + result[i] + ","
+					path +=  "'" + result[i - 1] + result[i] + "', "
 			
-			answers.append(path[:-1])
+			answers.append([str(list_seq), path[:-2] + "]"])
 
+		else:
+			print_fail("  //BREACHING_STATUS...................................................FAILED")
+
+	print_info("[ ALL SEQUENCE UPLOADS TESTED ]")
 
 	return answers
 
@@ -180,18 +224,49 @@ def breach_protocol(sequences):
 # main function	
 def main():
 
-	print("Engaging Breach Protocol...")
+	print_info(UNNECESSARY_INTRO)
+	print_info("[ ENGAGING BREACH PROTCOL... ]")
 	
 	# Find breach solutions
 	solutions = breach_protocol(SEQUENCES)
 
 	if len(solutions) == 0:
-		print("No solutions found!")
+
+		print_fail("[ PRCOESS TERMINATED PROCESS ]")
+
+		print_fail("[ BREACH ATTEMPT FAILED ]")
+		print_fail("[ PRCOESS TERMINATED PROCESS ]")
 
 	else:
-		print("Identified Solutions:")
-		for paths in solutions:
-			print("\t", paths, sep = "")
+
+		print_pass("[ SUCCESSFUL SOLUTIONS IDENTIFIED ]")
+		print_pass("  //ROOT")
+		print_pass("  //ACCESS_REQUEST")
+		print_pass("  //ACCESS_REQUEST_SUCCESS")
+		print_pass("  //COLLECTING PACKET_1...............................................COMPLETE")
+		print_pass("  //COLLECTING PACKET_2...............................................COMPLETE")
+		print_pass("  //COLLECTING PACKET_3...............................................COMPLETE")
+		print_pass("  //COLLECTING PACKET_4...............................................COMPLETE")
+		print_pass("  //LOGIN")
+		print_pass("  //LOGIN_SUCCESS")
+		print_pass("  //")
+		print_pass("  //UPLOAD_IN_PROGRESS")
+		print_pass("  //UPLOAD_COMPLETE!")
+		print_pass("[ ALL DAEMONS UPLOADED ]")
+		print_pass("[ SUCCESSFUL INPUTS: " + str(len(solutions)) + " ]")
+
+		solution_index = 0
+		for path in solutions:
+			print_pass("  //INPUT_" + str(solution_index) + "")
+			print("    //SEQUENCE")
+			print_res("\t" + path[0])
+			print("    //COORDINATES")
+			print_res("\t" + path[1])
+			solution_index += 1
+
+	print_info("[ Breach Protocol Complete! ]")
+	print_info("//////////////////////////////////////////////////////////////////////////////")
+
 
 if __name__ == '__main__':
 	main()
