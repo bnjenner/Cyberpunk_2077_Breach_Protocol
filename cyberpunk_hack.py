@@ -13,16 +13,27 @@ RULES:
 				be made to adjust position and fulfill additional
 				sequences, correcting errors in path finding 
 				or making the puzzle possible at all.
+
+NOTES
+	- Does not consider doubles (when one selection counts for two codes)
+	- Does not account for error capacity
+	- Add cyberpunk asthetic to print statements, lol
 '''
 
-# import 
+##########################################################################################
+# imports 
 import sys
 import itertools
 
-
+##########################################################################################
 # Global Variables
 BUFFER_SIZE = 8
 
+SEQUENCES = [["BD", "1C"],
+			 ["1C", "1C", "E9"],
+			 ["1C", "1C", "BD"]]
+
+#	Not solvable for all
 FRAME = [["BD", "E9", "1C", "BD", "BD"],
 		 ["55", "55", "55", "1C", "E9"],
 		 ["1C", "BD", "BD", "55", "1C"],
@@ -30,16 +41,21 @@ FRAME = [["BD", "E9", "1C", "BD", "BD"],
 		 ["1C", "55", "BD", "1C", "1C"]]
 
 
-SEQUENCES = [["BD", "1C"],
-			 ["1C", "1C", "E9"],
-			 ["1C", "1C", "BD"]]
+#	Solvable for all sequences
+FRAME = [["BD", "E9", "1C", "BD", "1C"],
+		 ["55", "55", "55", "1C", "E9"],
+		 ["1C", "BD", "BD", "55", "1C"],
+		 ["55", "1C", "1C", "BD", "55"],
+		 ["1C", "55", "BD", "1C", "1C"]]
+
 
 ERROR_CAP = BUFFER_SIZE - sum(map(len, SEQUENCES))
 
 
 
+##########################################################################################
 # Functions
-def index_finder(sequence, hexcode, row, index, prev_index, depth, exclude):
+def index_finder(sequence, hexcode, row, index, prev_index, depth, exclude_list):
 
 	# Takes possible hex codes to find,
 	#	a boolean designating to look for rows or columns (true if row, false if column),
@@ -50,15 +66,11 @@ def index_finder(sequence, hexcode, row, index, prev_index, depth, exclude):
 	#	and rows or columns.
 	#	Outputs index or code indicating certain conditions met.
 
-	#	if sequenece is correct 
-	if depth == len(sequence):
-		return "+"
-
 	# get correct row or column
 	if row:
 		line = FRAME[index]
 	else:
-		line = [row[index] for line in FRAME]
+		line = [line[index] for line in FRAME]
 
 
 	print("\tSearching for", hexcode, "in", line)
@@ -66,17 +78,25 @@ def index_finder(sequence, hexcode, row, index, prev_index, depth, exclude):
 	# find indicies of matching hex codes
 	for i in range(len(line)):
 
-		if i != exclude:
+		# get proper coordinates being checked
+		if row:
+			coord = str(prev_index) + str(i)
+		else:
+			coord = str(i) + str(prev_index)
+		
+		if not coord in exclude_list:
 
 			# if hexcode match
 			if line[i] == hexcode:
 
-				print("\t\tFound in position", i)
+				print("\t    Found in position", i)
 
-				if depth > 0:
-					new_exclude = prev_index
-				else:
-					new_exclude = 0
+				exclude_list.append(coord)
+
+				# if buffer size is reached 
+				if depth == len(sequence) - 1:
+					print("\tSolution found!")
+					return str(i) + "+"
 
 				# get new hexcode 
 				new_depth = depth + 1
@@ -86,27 +106,29 @@ def index_finder(sequence, hexcode, row, index, prev_index, depth, exclude):
 					print("\tBUFFER REACHED!!!")
 					return "!"
 				
+				# new hexcode to find
 				new_hexcode = sequence[new_depth]
 
+				print("\t    New hexcode target is", new_hexcode)
+				print("\t    Searching at depth", new_depth)
+				print("\t    Excluding", exclude_list)
 
-				print("\t\tNew hexcode target is", new_hexcode)
-				print("\t\tSearching at depth", new_depth)
-				print("\t\tExcluding", new_exclude)
-
+				# recurse and try to find next hexcode
 				return (str(i) + index_finder(sequence = sequence,
 											  hexcode = new_hexcode,
 											  row = not row,
 											  index = i,
 											  prev_index = i,
 											  depth = new_depth,
-											  exclude = new_exclude))
+											  exclude_list = exclude_list))
 
 	
-	print("\t\tNo Path Found")
+	print("\t    Hexcode not found!")
 	return "-"
 
 
-def accesspoint_cracker(sequences):
+#############################################
+def breach_protocol(sequences):
 
 	# Takes sequences, generates all possible combinatinos
 	#	sequences, and iterates through them with index_finder.
@@ -125,29 +147,52 @@ def accesspoint_cracker(sequences):
 		list_seq = [seq[i:i + 2] for i in range(0, len(seq), 2)]
 		hexcode = list_seq[0]
 
-		print("\n\nSTARTING SEQ", list_seq, "!!!\n\n")
+		print("    Processing Sequences ", list_seq, "...", sep = "")
 		result = index_finder(sequence = list_seq,
 							  hexcode = hexcode, 
 							  row = True,
 							  index = 0,
-							  prev_index = -1,
+							  prev_index = 0,
 							  depth = 0,
-							  exclude = [])
+							  exclude_list = [])
 
+		# if solution found, format path as coordinates
 		if result[-1] == "+":
-			answers.append(result)
+			
+			path = "0" + result[0] + ","
+			for i in range(1, len(result) - 1):
+
+				if i % 2:
+					path += result[i] + result[i - 1] + ","
+				else:
+					path +=  result[i - 1] + result[i] + ","
+			
+			answers.append(path[:-1])
+
 
 	return answers
 
-		
-
-answers = accesspoint_cracker(SEQUENCES)
-
-for a in answers:
-	print(a)
 
 
+##########################################################################################
+# main function	
+def main():
 
-# path_finder(SEQUENCES)
+	print("Engaging Beach Protocol...")
+	
+	# find 
+	solutions = breach_protocol(SEQUENCES)
+
+	if len(solutions) == 0:
+		print("\nNo solutions found!")
+
+	else:
+		print("\nIdentified Solutions (as row, column coordinates):")
+		for paths in solutions:
+			print("\t", paths, sep = "")
+
+if __name__ == '__main__':
+	main()
+
 
 
