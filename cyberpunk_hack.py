@@ -32,7 +32,7 @@ import itertools
 # Global Variables
 
 # Found from: https://emojicombos.com/cyberpunk-2077-ascii-art 
-UNNECESSARY_INTRO = """//////////////////////////////////////////////////////////////////////////////
+UNNECESSARY_INTRO = """////////////////////////////////////////////////////////////////////////////////
 
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡀⠀⠀⠀⠀⠀⠀⠀⡔⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡠⢚⣉⣠⡽⠂⠀⠀⠀⠀⡰⢋⡼⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⢴⡆⠀⠀
@@ -44,22 +44,20 @@ UNNECESSARY_INTRO = """/////////////////////////////////////////////////////////
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⣯⠃⠀⠀⠀⠀⠀⠀⠀⣸⣿⣿⣿⣿⣿⣽⣾⣾⣟⣯⣣⣱⣾⣟⣞⣸⣇⣳⣃⣿⣛⣷⣬⠧⠳⠇⠿⢧⢿⢀⣷⢸⠧⢾⢃⠇⠀⠀⠀⠀⠁
 
 
-//////////////////////////////////////////////////////////////////////////////"""
+////////////////////////////////////////////////////////////////////////////////"""
 
 
 BUFFER_SIZE = 8
 
+# solvable for all sequences 
 SEQUENCES = [["BD", "1C"],
 			 ["1C", "1C", "E9"],
 			 ["1C", "1C", "BD"]]
 
-
-#	Not solvable for all sequences
-FRAME = [["BD", "E9", "1C", "BD", "BD"],
-		 ["55", "55", "55", "1C", "E9"],
-		 ["1C", "BD", "BD", "55", "1C"],
-		 ["55", "1C", "1C", "BD", "55"],
-		 ["1C", "55", "BD", "1C", "1C"]]
+# # not solvable for all sequences 
+# SEQUENCES = [["BD", "E9"],
+# 			 ["1C", "1C", "E9"],
+# 			 ["1C", "1C", "BD"]]
 
 
 #	Solvable for all sequences
@@ -199,8 +197,9 @@ def breach_protocol(sequences):
 		# if solution found, format path as coordinates
 		if result[-1] == "+":
 
-			print_pass("  //BREACHING_STATUS.................................................COMPLETE")
-			
+			print_pass("    //BREACHING_STATUS..................................................COMPLETE")
+	
+			# formate path outputs and append to answers tab		
 			path = "['0" + result[0] + "', "
 			for i in range(1, len(result) - 1):
 
@@ -212,7 +211,7 @@ def breach_protocol(sequences):
 			answers.append([str(list_seq), path[:-2] + "]"])
 
 		else:
-			print_fail("  //BREACHING_STATUS...................................................FAILED")
+			print_fail("    //BREACHING_STATUS....................................................FAILED")
 
 	print_info("[ ALL SEQUENCE UPLOADS TESTED ]")
 
@@ -224,29 +223,41 @@ def breach_protocol(sequences):
 # main function	
 def main():
 
-	print_info(UNNECESSARY_INTRO)
+	print_res(UNNECESSARY_INTRO)
 	print_info("[ ENGAGING BREACH PROTCOL... ]")
 	
 	# Find breach solutions
 	solutions = breach_protocol(SEQUENCES)
 
+	# check if solutions
 	if len(solutions) == 0:
 
-		print_fail("[ PRCOESS TERMINATED PROCESS ]")
-
+		# print failure message
+		print_fail("[ NO SUCCESSFUL SOLUTIONS IDENTIFIED ]")
+		print_fail("  //ROOT_ATTEMPT_1")
+		print_fail("  //ROOT_ATTEMPT_2")
+		print_fail("  //ROOT_ATTEMPT_3")
+		print_fail("  //ROOT_FAILED")
+		print_fail("  //ROOT_REBOOT")
+		print_fail("  //ACCESSING.............................................................FAILED")
+		print_fail("  //ACCESSING.............................................................FAILED")
+		print_fail("  //ACCESSING.............................................................FAILED")
+		print_fail("  //ACCESSING.............................................................FAILED")
+		print_fail("  //ACCESSING.............................................................FAILED")
+		print_fail("[ USER TERMINATED PROCESS ]")
 		print_fail("[ BREACH ATTEMPT FAILED ]")
-		print_fail("[ PRCOESS TERMINATED PROCESS ]")
 
 	else:
 
+		# print success message 
 		print_pass("[ SUCCESSFUL SOLUTIONS IDENTIFIED ]")
 		print_pass("  //ROOT")
 		print_pass("  //ACCESS_REQUEST")
 		print_pass("  //ACCESS_REQUEST_SUCCESS")
-		print_pass("  //COLLECTING PACKET_1...............................................COMPLETE")
-		print_pass("  //COLLECTING PACKET_2...............................................COMPLETE")
-		print_pass("  //COLLECTING PACKET_3...............................................COMPLETE")
-		print_pass("  //COLLECTING PACKET_4...............................................COMPLETE")
+		print_pass("  //COLLECTING PACKET_1.................................................COMPLETE")
+		print_pass("  //COLLECTING PACKET_2.................................................COMPLETE")
+		print_pass("  //COLLECTING PACKET_3.................................................COMPLETE")
+		print_pass("  //COLLECTING PACKET_4.................................................COMPLETE")
 		print_pass("  //LOGIN")
 		print_pass("  //LOGIN_SUCCESS")
 		print_pass("  //")
@@ -255,17 +266,21 @@ def main():
 		print_pass("[ ALL DAEMONS UPLOADED ]")
 		print_pass("[ SUCCESSFUL INPUTS: " + str(len(solutions)) + " ]")
 
+		# print solutions 
 		solution_index = 0
 		for path in solutions:
 			print_pass("  //INPUT_" + str(solution_index) + "")
 			print("    //SEQUENCE")
-			print_res("\t" + path[0])
+			print_res("    " + path[0])
 			print("    //COORDINATES")
-			print_res("\t" + path[1])
+			print_res("    " + path[1])
 			solution_index += 1
 
-	print_info("[ Breach Protocol Complete! ]")
-	print_info("//////////////////////////////////////////////////////////////////////////////")
+	# say goodbye
+	print_info("[ BREACHING PROCESS COMPLETE ]")
+	print_info("[ EXITING INTERFACE ]")
+	print_res("////////////////////////////////////////////////////////////////////////////////")
+
 
 
 if __name__ == '__main__':
