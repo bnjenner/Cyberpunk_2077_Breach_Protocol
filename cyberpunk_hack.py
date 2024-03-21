@@ -101,7 +101,7 @@ def index_finder(sequence, hexcode, row, index, prev_index, depth, exclude_list)
 
 				# get new hexcode 
 				new_depth = depth + 1
-				new_row = -row
+				new_row = not row
 
 				#	if buffer size is met
 				if depth >= BUFFER_SIZE - 1:
