@@ -32,7 +32,8 @@ import itertools
 # Global Variables
 
 # Found from: https://emojicombos.com/cyberpunk-2077-ascii-art 
-UNNECESSARY_INTRO = """////////////////////////////////////////////////////////////////////////////////
+UNNECESSARY_INTRO = """
+////////////////////////////////////////////////////////////////////////////////
 
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡀⠀⠀⠀⠀⠀⠀⠀⡔⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡠⢚⣉⣠⡽⠂⠀⠀⠀⠀⡰⢋⡼⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⢴⡆⠀⠀
@@ -44,7 +45,7 @@ UNNECESSARY_INTRO = """/////////////////////////////////////////////////////////
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⣯⠃⠀⠀⠀⠀⠀⠀⠀⣸⣿⣿⣿⣿⣿⣽⣾⣾⣟⣯⣣⣱⣾⣟⣞⣸⣇⣳⣃⣿⣛⣷⣬⠧⠳⠇⠿⢧⢿⢀⣷⢸⠧⢾⢃⠇⠀⠀⠀⠀⠁
 
 
-////////////////////////////////////////////////////////////////////////////////"""
+////////////////////////////////////////////////////////////////////////////////""".strip()
 
 
 BUFFER_SIZE = 8
@@ -83,11 +84,14 @@ def print_fail(message, end = '\n'):
 def print_pass(message, end = '\n'):
 	sys.stdout.write('\x1b[1;32m' + message + '\x1b[0m' + end)
 
-def print_res(message, end = '\n'):
+def print_warn(message, end = '\n'):
 	sys.stderr.write('\x1b[1;33m' + message + '\x1b[0m' + end)
 
 def print_info(message, end = '\n'):
 	sys.stdout.write('\x1b[1;34m' + message + '\x1b[0m' + end)
+
+def print_result(message, code, end = '\n'):
+	sys.stdout.write(message + '\x1b[1;33m' + code + '\x1b[0m' + end)
 
 
 #############################################
@@ -185,7 +189,7 @@ def breach_protocol(sequences):
 		list_seq = [seq[i:i + 2] for i in range(0, len(seq), 2)]
 		hexcode = list_seq[0]
 
-		print("  //CRACKING SEQUENCE: " + str(list_seq) + "")
+		print("  //BREACHING SEQUENCE: " + str(list_seq))
 		result = index_finder(sequence = list_seq,
 							  hexcode = hexcode, 
 							  row = True,
@@ -197,7 +201,7 @@ def breach_protocol(sequences):
 		# if solution found, format path as coordinates
 		if result[-1] == "+":
 
-			print_pass("    //BREACHING_STATUS..................................................COMPLETE")
+			print_pass("  //BREACHING_STATUS..................................................COMPLETE")
 	
 			# formate path outputs and append to answers tab		
 			path = "['0" + result[0] + "', "
@@ -211,7 +215,7 @@ def breach_protocol(sequences):
 			answers.append([str(list_seq), path[:-2] + "]"])
 
 		else:
-			print_fail("    //BREACHING_STATUS....................................................FAILED")
+			print_fail("  //BREACHING_STATUS....................................................FAILED")
 
 	print_info("[ ALL SEQUENCE UPLOADS TESTED ]")
 
@@ -223,7 +227,7 @@ def breach_protocol(sequences):
 # main function	
 def main():
 
-	print_res(UNNECESSARY_INTRO)
+	print_warn(UNNECESSARY_INTRO)
 	print_info("[ ENGAGING BREACH PROTCOL... ]")
 	
 	# Find breach solutions
@@ -270,16 +274,14 @@ def main():
 		solution_index = 0
 		for path in solutions:
 			print_pass("  //INPUT_" + str(solution_index) + "")
-			print("    //SEQUENCE")
-			print_res("    " + path[0])
-			print("    //COORDINATES")
-			print_res("    " + path[1])
+			print_result("  //SEQUENCE:         ", path[0])
+			print_result("  //COORDINATES:      ", path[1])
 			solution_index += 1
 
 	# say goodbye
 	print_info("[ BREACHING PROCESS COMPLETE ]")
 	print_info("[ EXITING INTERFACE ]")
-	print_res("////////////////////////////////////////////////////////////////////////////////")
+	print_warn("////////////////////////////////////////////////////////////////////////////////")
 
 
 
