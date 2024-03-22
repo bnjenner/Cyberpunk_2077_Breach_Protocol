@@ -4,9 +4,9 @@
 
 As someone who loves Cyberpunk 2077 and Netrunning, this is just a fun project for one of my favorite games. Also beware of the incoming Cyberpunk slang. 
 
-It is still in it's early stages, but this script works enough to provide the best solution to any access point breach problem you will find in the game. As of now, it uses a recursive pseudo brute force method that automatically terminates nonviable paths through the matrix. 
+It is still in it's early stages, but this script works enough to provide the best solution to any access point breach problem you will find in the game. As of now, it uses a heuristics and recursiion to traverse the matrix, applying the game logic to terminate nonviable paths. 
 
-Ideally, it will eventually return all possible solutions, but I am still developing a way to handle branching path solutions. I also am working on image processing and image text recognition so eventually, the input will just be a picture of the access point. 
+In the future, it will have two algorithm options: finding all possibly solutions and finding the first best possible solution. The latter will hopefully apply heuristcs more cleverly will eventually return all possible solutions, but I am still developing a way to handle branching path solutions. I also am working on image processing and image text recognition so eventually, the input will just be a picture of the access point. 
 
 I also added some unncessary ascii art, neon colors, and messages found on access points in game to make it more fun. 
 
