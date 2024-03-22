@@ -47,9 +47,11 @@ I am still working out how to specify inputs for this tool whle I work on image 
 To do this, specify:
 * the matrix you are trying to crack (FRAME variable)
 * the sequences you are trying to upload (SEQUENCES variable)
-* and your buffer size (BUFFER_SIZE )
+* and your buffer size (BUFFER_SIZE variable)
 
 The frames and sequences are formatted as a list of lists. The positions of each item should be identical to how it is seen in the game.
+
+As of now, the basic usage is as follows:
 
 ```
 ./breach_protocol.py
