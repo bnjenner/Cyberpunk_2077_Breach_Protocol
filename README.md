@@ -2,7 +2,7 @@
 
 ## What's up, Chooms?
 
-As someone who loves Cyberpunk 2077 and Netrunning, this is just a fun project for one of my favorite games. 
+As someone who loves Cyberpunk 2077 and Netrunning, this is just a fun project for one of my favorite games. Also beware of the incoming Cyberpunk slang. 
 
 It is still in it's early stages, but this script works enough to provide the best solution to any access point breach problem you will find in the game. As of now, it uses a recursive pseudo brute force method that automatically terminates nonviable paths through the matrix. 
 
@@ -38,7 +38,7 @@ Now, make the script executable. The command below is for linux. I imagine it is
 chmod +x breach_protocol.py
 ```
 
-Preem, now go make some eddies!
+Preem, now go make some eddies. Just don't go poking the wrong bears. Don't wanna get zeroed by Netwatch.
 
 
 ## Usage
