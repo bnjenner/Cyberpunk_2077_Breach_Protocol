@@ -82,7 +82,7 @@ def main():
 
 	# Print intro
 	msg.print_warn(UNNECESSARY_INTRO)
-	msg.print_info("[ ENGAGING BREACH PROTCOL... ]")
+	msg.print_info("[ ENGAGING BREACH PROTOCOL... ]")
 	
 	# Find breach solutions
 	SeqHack = SequenceHack(FRAME, SEQUENCES, BUFFER_SIZE)
@@ -109,7 +109,7 @@ def main():
 	else:
 
 		# print success message 
-		msg.print_pass("[ SUCCESSFUL SOLUTIONS IDENTIFIED ]")
+		msg.print_pass("[ SUCCESSFUL SEQUENCES IDENTIFIED ]")
 		msg.print_pass("  //ROOT")
 		msg.print_pass("  //ACCESS_REQUEST")
 		msg.print_pass("  //ACCESS_REQUEST_SUCCESS")
@@ -123,7 +123,7 @@ def main():
 		msg.print_pass("  //UPLOAD_IN_PROGRESS")
 		msg.print_pass("  //UPLOAD_COMPLETE!")
 		msg.print_pass("[ ALL DAEMONS UPLOADED ]")
-		msg.print_pass("[ SUCCESSFUL INPUTS: " + str(len(solutions)) + " ]")
+		msg.print_pass("[ SUCCESSFUL SEQUENCE UPLOADS: " + str(len(solutions)) + " ]")
 
 		# print solutions 
 		solution_index = 0
