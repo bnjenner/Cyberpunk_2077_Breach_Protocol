@@ -4,17 +4,17 @@
 
 As someone who loves Cyberpunk 2077 and Netrunning, this is just a fun project for one of my favorite games. Also beware of the incoming Cyberpunk slang. 
 
-It is still in it's early stages, but this script works enough to provide the best solution to any access point breach problem you will find in the game. As of now, it uses a heuristics and recursiion to traverse the matrix, applying the game logic to terminate nonviable paths. 
+It is still in it's early stages, but this script works enough to provide all solutions uploading the most (or at least best) hexcode seauences to any access point breach problem you will find in the game. As of now, it uses heuristics and recursiion to traverse the matrix, applying the game's logic for terminating nonviable paths. 
 
-In the future, it will have two algorithm options: finding all possibly solutions and finding the first best possible solution. The latter will hopefully apply heuristcs more cleverly will eventually return all possible solutions, but I am still developing a way to handle branching path solutions. I also am working on image processing and image text recognition so eventually, the input will just be a picture of the access point. 
+In the future, it will have two algorithm options: finding all possible solutions and finding the shortest possible solution that uploads the best hexcode sequencs with the minimal amount of buffer used. The latter will hopefully apply heuristcs more cleverly. I am still developing a way to handle branching path solutions for the comprehensive solution finder in addition to an image processing and image text recognition pipeline so eventually, the input will just be a picture of the access point. 
 
 I also added some unncessary ascii art, neon colors, and messages found on access points in game to make it more fun. 
 
 This is a command line tool built in linux that uses python3, conda, and some fun dependencies (for image processing later). I assume it will work on windows, but I have not tested it so your mileage may vary. 
 
-There is no GUI. A real Netrunner would use the terminal, anyway, so I am gonna gate keep a bit.
+There is no GUI. A real Netrunner would use the terminal, anyway, right? It would be clever to add this as a mod in the game and add a keybinding to it, but alas, I am no game modder. 
 
-I hope you enjoy!
+Enjoy! Now go make some eddies.
 
 
 ## Installation
@@ -38,18 +38,18 @@ Now, make the script executable. The command below is for linux. I imagine it is
 chmod +x breach_protocol.py
 ```
 
-Preem, now go make some eddies. Just don't go poking the wrong bears. Don't wanna get zeroed by Netwatch.
+Preem, time to get cracking, just don't go poking the wrong bears. Don't wanna get zeroed by Netwatch.
 
 
 ## Usage
 
-I am still working out how to specify inputs for this tool whle I work on image processing. So unfortunately, you will have to manually edit breach_protocol.py.
-To do this, specify:
-* the matrix you are trying to crack (FRAME variable)
-* the sequences you are trying to upload (SEQUENCES variable)
-* and your buffer size (BUFFER_SIZE variable)
+I am still working out how to specify inputs for this tool whle I work on image processing. So unfortunately, you will have to manually edit breach_protocol.py. The frames and sequences are formatted as a list of lists. The positions of each item should be identical to how it is seen in the game.
+To input your data, modify the following variables:
+* FRAME: the matrix you are trying to crack
+* SEQUENCES: the sequences you are trying to upload
+* BUFFER_SIZE: your buffer size
 
-The frames and sequences are formatted as a list of lists. The positions of each item should be identical to how it is seen in the game.
+I have also considered a json file as an input, but honestly who enjoys working with jsons?
 
 As of now, the basic usage is as follows:
 
