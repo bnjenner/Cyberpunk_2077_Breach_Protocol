@@ -22,7 +22,7 @@ Enjoy! Now go make some eddies.
 
 ## Installation
 
-First things first, install git and conda on your sysem. For information on how to do that, start here: [Install Conda](https://conda.io/projects/conda/en/latest/user-guide/install/index.html)
+First things first, install git and conda. For information on how to do that, start here: [Install Conda](https://conda.io/projects/conda/en/latest/user-guide/install/index.html)
 
 This utilizes a conda environment to manage the packages. I found this to be the easist deployment method, but install may take awhile.
 
