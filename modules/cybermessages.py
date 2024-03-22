@@ -14,7 +14,7 @@ class CyberMessages():
 		sys.stdout.write('\x1b[1;32m' + message + '\x1b[0m' + end)
 
 	def print_warn(message, end = '\n'):
-		print('\033[93m{}\033[1m'.format(message))
+		sys.stdout.write("\033[93m" + message + '\033[1m\033[0m' + end)
 
 	def print_info(message, end = '\n'):
 		sys.stdout.write('\x1b[1;34m' + message + '\x1b[0m' + end)
