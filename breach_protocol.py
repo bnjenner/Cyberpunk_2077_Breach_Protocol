@@ -23,13 +23,11 @@ RULES:
 				or making the puzzle possible at all.
 
 NOTES
-	- Does not fully deal with issue of buffer size
 	- Need to deal with branching solutions
 		Probably convert string path to list and have nested lists representing
 		branching solutions
 	- Does not consider doubles (when one selection counts for two codes)
 	- Does not account for error capacity
-	- Add cyberpunk asthetic to print statements, lol
 '''
 
 
