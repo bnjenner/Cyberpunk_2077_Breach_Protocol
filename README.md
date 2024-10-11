@@ -32,7 +32,7 @@ Here are the install commands
 
 ```
 git clone https://github.com/bnjenner/Cyberpunk_2077_Breach_Protocol.git
-cd Cyberpunk_2077_Breach_Protocol.git
+cd Cyberpunk_2077_Breach_Protocol
 conda env create -f environment.yml
 conda activate breach_protocol
 ```
