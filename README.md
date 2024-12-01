@@ -15,8 +15,6 @@ I also added some unncessary ascii art, neon colors, and messages found on acces
 
 This is a command line tool built in linux that uses python3, conda, and some fun dependencies (for image processing later). I assume it will work on windows, but I have not tested it so your mileage may vary. 
 
-There is no GUI. A real Netrunner would use the terminal, anyway, right? It would be clever to add this as a mod in the game and add a keybinding to it, but alas, I am no game modder. 
-
 Enjoy! Now go make some eddies.
 
 
