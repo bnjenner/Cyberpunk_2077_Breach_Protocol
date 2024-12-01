@@ -47,10 +47,10 @@ Nova, now time to get cracking, just don't go poking the wrong bears. Don't wann
 ## Usage
 
 Inputs
-* FRAME: the matrix you are trying to crack
 * SEQUENCES: the sequences you are trying to upload
+* FRAME: the matrix you are trying to crack
 * BUFFER_SIZE: your buffer size
 
 ```
-./breach_protocol.py sequence.csv frame.csv BUFFER_SIZE
+./breach_protocol.py SEQUENCE.csv FRAME.csv BUFFER_SIZE
 ```
