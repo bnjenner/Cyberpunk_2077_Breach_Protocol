@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
 import sys
-from modules.cybermessages import CyberMessages as msg
-from modules.sequences import SequenceHack
+from utils.cybermessages import CyberMessages as msg
+from utils.sequences import SequenceHack
+from utils.utils import  read_csv
 
 ##########################################################################################
 '''
@@ -48,28 +49,13 @@ UNNECESSARY_INTRO = """/////////////////////////////////////////////////////////
 
 
 ////////////////////////////////////////////////////////////////////////////////"""
+	
+# Read Sequences
+SEQUENCES = read_csv(sys.argv[1])
+FRAME = read_csv(sys.argv[2])
 
 # Size of castable sequence
-BUFFER_SIZE = 8
-
-# solvable for all sequences 
-SEQUENCES = [["BD", "1C"],
-			 ["1C", "1C", "E9"],
-			 ["1C", "1C", "BD"]]
-
-# # not solvable for all sequences 
-# SEQUENCES = [["BD", "E9"],
-# 			 ["1C", "1C", "E9"],
-# 			 ["1C", "1C", "BD"]]
-
-
-#	Solvable for all sequences
-FRAME = [["BD", "E9", "1C", "BD", "1C"],
-		 ["55", "55", "55", "1C", "E9"],
-		 ["1C", "BD", "BD", "55", "1C"],
-		 ["55", "1C", "1C", "BD", "55"],
-		 ["1C", "55", "BD", "1C", "1C"]]
-
+BUFFER_SIZE = int(sys.argv[3])
 
 ERROR_CAP = BUFFER_SIZE - sum(map(len, SEQUENCES))
 
@@ -81,6 +67,8 @@ def main():
 	# Print intro
 	msg.print_warn(UNNECESSARY_INTRO)
 	msg.print_info("[ ENGAGING BREACH PROTOCOL... ]")
+
+
 	
 	# Find breach solutions
 	SeqHack = SequenceHack(FRAME, SEQUENCES, BUFFER_SIZE)

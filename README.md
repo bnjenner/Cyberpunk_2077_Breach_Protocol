@@ -46,16 +46,11 @@ Nova, now time to get cracking, just don't go poking the wrong bears. Don't wann
 
 ## Usage
 
-I am still working out how to specify inputs for this tool whle I work on image processing. So unfortunately, you will have to manually edit breach_protocol.py. The frames and sequences are formatted as a list of lists. The positions of each item should be identical to how it is seen in the game.
-To input your data, modify the following variables:
+Inputs
 * FRAME: the matrix you are trying to crack
 * SEQUENCES: the sequences you are trying to upload
 * BUFFER_SIZE: your buffer size
 
-I have also considered a json file as an input, but honestly who enjoys working with jsons?
-
-As of now, the basic usage is as follows:
-
 ```
-./breach_protocol.py
+./breach_protocol.py sequence.csv frame.csv BUFFER_SIZE
 ```
