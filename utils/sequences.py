@@ -4,7 +4,6 @@ from .cybermessages import CyberMessages as msg
 
 ##########################################################################################
 
-
 class SequenceHack:
 
     # init function
@@ -14,27 +13,16 @@ class SequenceHack:
         self.BUFFER_SIZE = BUFFER_SIZE
 
     #############################################
-    # Function for finding index of hexcode in row or column of matrix
+    # Recursive Function for finding index of hexcode in row or column of matrix
     def index_finder(
         self, sequence, hexcode, row, index, prev_index, depth, exclude_list
     ):
-
-        # Takes possible hex codes to find,
-        # 	a boolean designating to look for rows or columns (true if row, false if column),
-        # 	the index to search use for rows or columns,
-        # 	the previous index,
-        # 	the depth of the search (length of answer sequence),
-        # 	and the index to exclude (NOT ALWAYS THE SAME AS PREVIOUS INDEX),
-        # 	and rows or columns.
-        # 	Outputs index or code indicating certain conditions met.
 
         # get correct row or column
         if row:
             line = self.FRAME[index]
         else:
             line = [row_col[index] for row_col in self.FRAME]
-
-        # print("\tSearching for ", hexcode, " in ", line, "...", sep = "")
 
         # find indicies of matching hex codes
         for i in range(len(line)):
@@ -49,14 +37,11 @@ class SequenceHack:
 
                 # if hexcode match
                 if line[i] == hexcode:
-
-                    # print("\t    Found in position", i)
-
+                    
                     exclude_list.append(coord)
 
                     # if buffer size is reached
                     if depth == len(sequence) - 1:
-                        # print("\tSolution found!")
                         return str(i) + "+"
 
                     # get new hexcode
@@ -65,15 +50,10 @@ class SequenceHack:
 
                     # 	if buffer size is met
                     if depth >= self.BUFFER_SIZE - 1:
-                        # print("\tBUFFER REACHED!!!")
                         return "!"
 
                     # new hexcode to find
                     new_hexcode = sequence[new_depth]
-
-                    # print("\t    New hexcode target is", new_hexcode)
-                    # print("\t    Searching at depth", new_depth)
-                    # print("\t    Excluding", exclude_list)
 
                     tmp_str = str(i) + self.index_finder(
                         sequence=sequence,
@@ -105,11 +85,14 @@ class SequenceHack:
         num_seq_codes = len(sequence_strings)
         target_seq_length = len("".join(sequence_strings))
 
-        # if buffer is not large enough,
-        # 	drops all codes to see which string is the longest (best)
-        # 	assuming longest codes are at bottom (they are).
-        # 	The bottom codes get dropped first, ensuring best outcome
-        # 	Iterates until sequence length fits in buffer
+        """
+            If buffer is not large enough,
+         	drops all codes to see which string is the longest (best)
+         	assuming longest codes are at bottom (they are).
+         	The bottom codes get dropped first, ensuring best outcome
+         	Iterates until sequence length fits in buffer
+        """
+        
         while target_seq_length > (2 * self.BUFFER_SIZE):
 
             best_seq_options = []
